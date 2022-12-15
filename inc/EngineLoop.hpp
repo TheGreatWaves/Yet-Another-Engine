@@ -1,85 +1,89 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "SharedContext.hpp"
 
-class Engine
+class FEngine
 {
 public:
-    Engine()
-        : m_window(sf::VideoMode(800, 600), "My SFML Project")
+    FEngine()
     {
+        m_sharedContext.m_window = std::make_unique<FWindow>(
+            FWindowInfo::Default()
+            );
     }
 
-    void run() noexcept
+    void Run() noexcept
     {
-        while (m_window.isOpen())
+        while (m_sharedContext.m_window->GetWindow()->isOpen())
         {
             // Update the delta time.
-            updateDt();
+            UpdateDt();
 
             // Handle any events (keyboard, mouse, etc.)
-            processEvents();
+            ProcessEvents();
 
             // Update anything that needs to be updated in real time.
-            realTimeUpdate();
+            RealTimeUpdate();
 
             // Update anything that needs to be updated with a fixed timestep.
-            fixedTimeUpdate();
+            FixedTimeUpdate();
 
             // Render the frame.
-            render();
+            Render();
         }
     }
 
 private:
 
     // Update the delta time (the amount of time since the last frame).
-    void updateDt() noexcept
+    void UpdateDt() noexcept
     {
         m_timeSinceLastUpdate = m_clock.restart();
     }
 
-    void processEvents()
+    void ProcessEvents()
     {
-        sf::Event event{};
-        while (m_window.pollEvent(event))
+        sf::Event Event{};
+        while (m_sharedContext.m_window->GetWindow()->pollEvent(Event))
         {
-            if (event.type == sf::Event::Closed ||
-                (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+            if (Event.type == sf::Event::Closed ||
+                (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Escape))
             {
-                m_window.close();
+                m_sharedContext.m_window->GetWindow()->close();
             }
         }
     }
 
-    void update(const sf::Time& dt) noexcept
+    void Update(const sf::Time& Dt) noexcept
     {
     }
 
-    void fixedTimeUpdate()
+    void FixedTimeUpdate()
     {
         while (m_timeSinceLastUpdate >= m_timestep)
         {
             m_timeSinceLastUpdate -= m_timestep;
-            update(m_timestep);
+            Update(m_timestep);
         }
     }
 
-    void realTimeUpdate() noexcept
+    void RealTimeUpdate() noexcept
     {
         // Stuff that needs to be updated in real time goes here
     }
 
-    void render()
+    void Render()
     {
-        m_window.clear();
+        m_sharedContext.m_window->GetWindow()->clear();
 
         // Draw your game objects here
 
-        m_window.display();
+        m_sharedContext.m_window->GetWindow()->display();
     }
 
-    sf::RenderWindow m_window;
+    // Shared context containing a pointer to the window.
+    FSharedContext m_sharedContext;
+
     sf::Time m_timeSinceLastUpdate;
     const sf::Time m_timestep = sf::seconds(1.f / 144.f);
     sf::Clock m_clock;

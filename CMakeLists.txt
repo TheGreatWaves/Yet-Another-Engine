@@ -10,7 +10,7 @@ FetchContent_MakeAvailable(SFML)
 add_executable(CMakeSFMLProject 
     src/main.cpp
     inc/EngineLoop.hpp
-    )
+     "inc/Utils.hpp" "inc/Common.hpp" "inc/Window.hpp")
 
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
