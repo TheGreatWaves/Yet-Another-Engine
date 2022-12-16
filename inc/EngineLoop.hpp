@@ -1,8 +1,13 @@
 #pragma once
 
-#include "SharedContext.hpp"
+#include <iostream>
 
-class Engine {
+#include "SharedContext.hpp"
+#include "ECS/ECSUtils.hpp"
+#include "ECS/EntityManager.hpp"
+
+class Engine
+{
 public:
     Engine()
 	{
@@ -52,7 +57,10 @@ private:
         }
     }
 
-    void Update(const sf::Time& dt) noexcept {}
+    void Update(const sf::Time& dt) noexcept
+    {
+	    
+    }
 
     void FixedTimeUpdate()
 	{
@@ -83,4 +91,5 @@ private:
     sf::Time time_since_last_update_;
     const sf::Time timestep_ = sf::seconds(1.f / 144.f);
     sf::Clock clock_;
+
 };
