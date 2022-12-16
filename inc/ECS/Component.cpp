@@ -1,3 +1,3 @@
 #include "Component.hpp"
 
-ComponentType Component::s_NextType = 0;
+ComponentType Component::s_next_type = 0;

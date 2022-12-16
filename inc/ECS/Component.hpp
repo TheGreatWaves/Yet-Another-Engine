@@ -5,27 +5,24 @@
 #include <array>
 #include <memory>
 
-constexpr std::size_t MaxComponents = 32;
+constexpr std::size_t kMaxComponents = 32;
 
 using ComponentType = std::size_t;
 
-using ComponentBitset = std::bitset<MaxComponents>;
+using ComponentBitset = std::bitset<kMaxComponents>;
 
-class Component
-{
+class Component {
 public:
     virtual ~Component() = default;
 
     // Returns the unique type ID of the component.
-    static ComponentType GetType()
-    {
-        static ComponentType type = s_NextType++;
+    static ComponentType GetType() {
+        static ComponentType type = s_next_type++;
         return type;
     }
 
 private:
-    static ComponentType s_NextType;
+    static ComponentType s_next_type;
 };
 
-using ComponentArray = std::array<std::unique_ptr<Component>, MaxComponents>;
-
+using ComponentArray = std::array<std::unique_ptr<Component>, kMaxComponents>;

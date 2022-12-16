@@ -10,7 +10,7 @@ FetchContent_MakeAvailable(SFML)
 add_executable(CMakeSFMLProject 
     src/main.cpp
     inc/EngineLoop.hpp
-     "inc/Utils.hpp" "inc/Common.hpp" "inc/Window.hpp" "inc/ResourceManager.hpp"  "inc/ECS/Entity.hpp" "inc/ECS/EntityManager.hpp" "inc/ECS/System.hpp" "inc/ECS/EntityManager.cpp" "inc/ECS/Component.hpp" "inc/ECS/Component.cpp" "inc/ECS/System.cpp" "inc/ECS/ECSUtils.hpp")
+     "inc/Utils.hpp" "inc/Common.hpp" "inc/Window.hpp" "inc/ResourceManager.hpp"  "inc/ECS/Entity.hpp" "inc/ECS/EntityManager.hpp" "inc/ECS/System.hpp" "inc/ECS/EntityManager.cpp" "inc/ECS/Component.hpp" "inc/ECS/Component.cpp" "inc/ECS/System.cpp" "inc/ECS/ECSUtils.hpp"   "inc/Core/States/State.cpp" )
 
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
