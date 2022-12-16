@@ -2,7 +2,7 @@
 
 int main()
 {
-	FEngine engine;
+	Engine engine;
 	engine.Run();
 	return 0;
 }

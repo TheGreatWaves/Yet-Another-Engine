@@ -2,19 +2,17 @@
 
 #include "SharedContext.hpp"
 
-class FEngine
-{
+class Engine {
 public:
-    FEngine()
-    {
-        m_sharedContext.m_window = std::make_unique<FWindow>(
-            FWindowInfo::Default()
-            );
+    Engine()
+	{
+        shared_context_.window_ =
+            std::make_unique<Window>(WindowInfo::Default());
     }
 
     void Run() noexcept
-    {
-        while (m_sharedContext.m_window->GetWindow()->isOpen())
+	{
+        while (shared_context_.window_->GetWindow()->isOpen()) 
         {
             // Update the delta time.
             UpdateDt();
@@ -34,57 +32,55 @@ public:
     }
 
 private:
-
     // Update the delta time (the amount of time since the last frame).
     void UpdateDt() noexcept
-    {
-        m_timeSinceLastUpdate = m_clock.restart();
+	{
+        time_since_last_update_ = clock_.restart();
     }
 
     void ProcessEvents()
-    {
-        sf::Event Event{};
-        while (m_sharedContext.m_window->GetWindow()->pollEvent(Event))
+	{
+        sf::Event event{};
+        while (shared_context_.window_->GetWindow()->pollEvent(event)) 
         {
-            if (Event.type == sf::Event::Closed ||
-                (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Escape))
+            if (event.type == sf::Event::Closed ||
+                (event.type == sf::Event::KeyPressed &&
+                    event.key.code == sf::Keyboard::Escape)) 
             {
-                m_sharedContext.m_window->GetWindow()->close();
+                shared_context_.window_->GetWindow()->close();
             }
         }
     }
 
-    void Update(const sf::Time& Dt) noexcept
-    {
-    }
+    void Update(const sf::Time& dt) noexcept {}
 
     void FixedTimeUpdate()
-    {
-        while (m_timeSinceLastUpdate >= m_timestep)
+	{
+        while (time_since_last_update_ >= timestep_) 
         {
-            m_timeSinceLastUpdate -= m_timestep;
-            Update(m_timestep);
+            time_since_last_update_ -= timestep_;
+            Update(timestep_);
         }
     }
 
     void RealTimeUpdate() noexcept
-    {
+	{
         // Stuff that needs to be updated in real time goes here
     }
 
     void Render()
-    {
-        m_sharedContext.m_window->GetWindow()->clear();
+	{
+        shared_context_.window_->GetWindow()->clear();
 
         // Draw your game objects here
 
-        m_sharedContext.m_window->GetWindow()->display();
+        shared_context_.window_->GetWindow()->display();
     }
 
     // Shared context containing a pointer to the window.
-    FSharedContext m_sharedContext;
+    SharedContext shared_context_;
 
-    sf::Time m_timeSinceLastUpdate;
-    const sf::Time m_timestep = sf::seconds(1.f / 144.f);
-    sf::Clock m_clock;
+    sf::Time time_since_last_update_;
+    const sf::Time timestep_ = sf::seconds(1.f / 144.f);
+    sf::Clock clock_;
 };

@@ -4,32 +4,34 @@
 
 namespace Utils
 {
-    namespace Text
-    {
-        float GetSFMLTextMaxHeight(const sf::Text& InText)
-        {
-            // Extract font and character size from the text object.
-            auto CharSize = InText.getCharacterSize();
-            auto Font = InText.getFont();
-            bool bBold = (InText.getStyle() & sf::Text::Bold);
+	namespace Text
+	{
+		float GetSfmlTextMaxHeight(const sf::Text& in_text)
+		{
+			// Extract font and character size from the text object.
+			auto char_size = in_text.getCharacterSize();
+			auto font = in_text.getFont();
+			bool bold = (in_text.getStyle() & sf::Text::Bold);
 
-            // Initialize the maximum height to 0.
-            float Max = 0.f;
+			// Initialize the maximum height to 0.
+			float max = 0.f;
 
-            // Iterate over the characters in the text string.
-            for (size_t i = 0, End = InText.getString().getSize(); i < End; ++i)
-            {
-                // Get the character and its glyph from the font.
-                sf::Uint32 Character = InText.getString()[i];
-                auto Glyph = Font->getGlyph(Character, CharSize, bBold);
+			// Iterate over the characters in the text string.
+			for (size_t i = 0, end = in_text.getString().getSize(); i < end; ++i)
+			{
+				// Get the character and its glyph from the font.
+				sf::Uint32 character = in_text.getString()[i];
+				auto glyph = font->getGlyph(character, char_size, bold);
+				// Update the maximum height if necessary.
+				auto height = glyph.bounds.height;
+				if (height > max)
+				{
+					max = height;
+				}
+			}
 
-                // Update the maximum height if necessary.
-                auto Height = Glyph.bounds.height;
-                if (Height > Max) { Max = Height; }
-            }
-
-            // Return the maximum height of the text.
-            return Max;
-        }
-    }
-}
+			// Return the maximum height of the text.
+			return max;
+		}
+	} // namespace Text
+} // namespace Utils

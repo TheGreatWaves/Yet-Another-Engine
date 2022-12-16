@@ -1,45 +1,42 @@
 #pragma once
 
 #include "WindowInfo.hpp"
-
-class FWindow
-{
+class Window {
 public:
     // Constructor that initializes the window with the dimensions and title specified in the window info object.
-    explicit FWindow(const FWindowInfo& WindowInfo)
-        : m_window(sf::VideoMode(WindowInfo.GetDimensions().x, WindowInfo.GetDimensions().y), WindowInfo.GetTitle())
-        , m_windowInfo(WindowInfo)
-    {
-    }
+    explicit Window(const WindowInfo& in_window_info)
+        : window_(sf::VideoMode(in_window_info.GetDimensions().x,
+            in_window_info.GetDimensions().y),
+            in_window_info.GetTitle()),
+        window_info_(in_window_info) {}
 
     // Update the SFML window with the dimensions and title specified in the window info object.
     void UpdateWindow()
-    {
-        m_window.setSize(m_windowInfo.GetDimensions());
-        m_window.setTitle(m_windowInfo.GetTitle());
+	{
+        window_.setSize(window_info_.GetDimensions());
+        window_.setTitle(window_info_.GetTitle());
     }
 
     // Check if the window is open.
-    [[nodiscard]] bool IsOpen() const { return m_window.isOpen(); }
+    [[nodiscard]] bool IsOpen() const { return window_.isOpen(); }
 
     // Get a pointer to the SFML window.
-    sf::RenderWindow* GetWindow() { return &m_window; }
+    sf::RenderWindow* GetWindow() { return &window_; }
 
     // Set the view to be used for rendering.
-    void SetView(const sf::View& View) { m_window.setView(View); }
+    void SetView(const sf::View& in_view) { window_.setView(in_view); }
 
     // Set the viewport for the window.
-    void SetViewport(const sf::FloatRect& Viewport)
-    {
+    void SetViewport(const sf::FloatRect& in_viewport)
+	{
         // Create a new view and use it.
-        SetView(sf::View{ Viewport });
+        SetView(sf::View{ in_viewport });
     }
 
 private:
     // The SFML window.
-    sf::RenderWindow m_window;
+    sf::RenderWindow window_;
 
     // Information about the window.
-    FWindowInfo m_windowInfo;
+    WindowInfo window_info_;
 };
-

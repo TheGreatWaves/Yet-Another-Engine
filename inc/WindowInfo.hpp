@@ -3,39 +3,41 @@
 #include "Common.hpp"
 #include <SFML/Window/VideoMode.hpp>
 
-class FWindowInfo
+class WindowInfo
 {
 public:
     // Constructor that initializes the dimensions and title of the window.
-    FWindowInfo(unsigned int Width, unsigned int Height, std::string Title)
-        : m_dimensions(Width, Height)
-        , m_title(std::move(Title))
-    {
-    }
+    WindowInfo(unsigned int in_width, unsigned int in_height,
+        std::string in_title)
+        : width_(in_width),
+        height_(in_height),
+        title_(std::move(in_title)) {}
 
     // Constructor that initializes the video mode and title of the window.
-    FWindowInfo(const sf::VideoMode& VideoMode, std::string Title)
-        : m_dimensions(VideoMode.width, VideoMode.height)
-        , m_title(std::move(Title))
-    {
-    }
+    WindowInfo(const sf::VideoMode& in_video_mode, std::string in_title)
+        : width_(in_video_mode.width),
+        height_(in_video_mode.height),
+        title_(std::move(in_title)) {}
 
     // Get the dimensions of the window.
-    [[nodiscard]] const sf::Vector2u& GetDimensions() const { return m_dimensions; }
+    [[nodiscard]] sf::Vector2u GetDimensions() const
+	{
+        return { width_, height_ };
+    }
 
     // Get the title of the window.
-    [[nodiscard]] const std::string& GetTitle() const { return m_title; }
+    [[nodiscard]] const std::string& GetTitle() const { return title_; }
 
-    static FWindowInfo Default()
-    {
+    static WindowInfo Default()
+	{
         return { sf::VideoMode::getDesktopMode(), "None" };
     }
 
 private:
     // Dimensions of the window, in pixels.
-    sf::Vector2u m_dimensions;
+    unsigned int width_;
+    unsigned int height_;
 
     // Title of the window.
-    std::string m_title;
+    std::string title_;
 };
-

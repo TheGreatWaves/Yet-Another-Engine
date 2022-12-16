@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Window.hpp"
+#include "ResourceManager.hpp"
 #include <memory>
 
-struct FSharedContext
-{
-	FSharedContext()
-		: m_window(nullptr)
-	{}
+struct SharedContext {
+	SharedContext() : window_(nullptr) {}
 
-	std::unique_ptr<FWindow> m_window;
+	std::unique_ptr<Window> window_;
+	resources::TextureHolder texture_holder_;
 };
+
 
