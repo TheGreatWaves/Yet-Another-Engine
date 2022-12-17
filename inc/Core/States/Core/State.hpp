@@ -5,13 +5,14 @@
 #include <functional>
 #include <cassert>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "StateIdentifier.hpp"
+
+// TODO: Remove this
+#include <iostream>
+
 
 namespace States
 {
-	enum class ID
-	{
-
-	};
 
 	class StateStack;
 
@@ -28,14 +29,14 @@ namespace States
 		explicit State(StateStack& stack, Context context);
 		virtual ~State();
 
-		virtual void draw() = 0;
-		virtual bool update(sf::Time dt) = 0;
-		virtual bool handleEvent(const sf::Event& event) = 0;
+		virtual void	draw() = 0;
+		virtual bool	update(const sf::Time& dt) = 0;
+		virtual bool	handleEvent(const sf::Event& event) = 0;
 
 	protected:
-		void requestStackPush(ID stateID);
-		void requestStackPop();
-		void requestStateClear();
+		void			requestStackPush(ID stateID);
+		void			requestStackPop();
+		void			requestStateClear();
 
 		[[nodiscard]] Context getContext() const;
 
@@ -57,7 +58,7 @@ namespace States
 		explicit StateStack(State::Context context);
 		template <typename T>
 		void registerState(ID stateID);
-		void update(sf::Time dt);
+		void update(const sf::Time& dt);
 		void draw();
 		void handleEvent(const sf::Event& event);
 		void pushState(ID stateID);
@@ -70,6 +71,8 @@ namespace States
 	private:
 		struct PendingChange
 		{
+			PendingChange(Action _action, ID _stateID = States::ID::None);
+
 			Action action;
 			ID     stateID;
 		};
@@ -80,4 +83,13 @@ namespace States
 		std::map<ID, std::function<State::Ptr()>> mFactories;
 	};
 
+}
+
+template <typename T>
+void States::StateStack::registerState(States::ID stateID)
+{
+	mFactories[stateID] = [this]()
+	{
+		return States::State::Ptr(new T(*this, mContext));
+	};
 }

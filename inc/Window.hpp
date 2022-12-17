@@ -20,6 +20,12 @@ public:
     // Check if the window is open.
     [[nodiscard]] bool IsOpen() const { return window_.isOpen(); }
 
+    // Close the SFML window
+    void CloseWindow()
+    {
+        window_.close();
+    }
+
     // Get a pointer to the SFML window.
     sf::RenderWindow* GetWindow() { return &window_; }
 
